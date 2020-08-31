@@ -18,9 +18,9 @@ jobs:
         
       - name: Set up build environment
         run: |
-          apt install python-setuptools cmake build-essential ninja-build python-dev libffi-dev libssl-dev
-          pip install yotta
-          apt install -y gcc-arm-none-eabi
+          sudo apt install python-setuptools cmake build-essential ninja-build python-dev libffi-dev libssl-dev
+          sudo pip install yotta
+          sudo apt install -y gcc-arm-none-eabi
         
       - name: Set target
         run: yt target bbc-microbit-classic-gcc
