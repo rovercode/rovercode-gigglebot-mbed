@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         
-      - name: Run a multi-line script
+      - name: Set up build environment
         run: |
           apt-get update
           apt-get install python-setuptools cmake build-essential ninja-build python-dev libffi-dev libssl-dev
