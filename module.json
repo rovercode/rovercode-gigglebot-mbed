@@ -1,7 +1,7 @@
 {
-  "name": "microbit-samples",
+  "name": "rovercode-gigglebot-mbed",
   "version": "2.1.1",
-  "description": "The micro:bit runtime common abstraction with examples.",
+  "description": "The Rovercode service for GiggleBot on mBed.",
   "license": "MIT",
   "dependencies": {
     "microbit": "lancaster-university/microbit#v2.1.1"
