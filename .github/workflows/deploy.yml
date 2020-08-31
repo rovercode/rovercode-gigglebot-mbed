@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master, beta, alpha ]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION}}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Run a multi-line script
+        run: |
+          apt-get update
+          apt-get install python-setuptools cmake build-essential ninja-build python-dev libffi-dev libssl-dev
+          pip install yotta
+          sudo apt-get install -y gcc-arm-none-eabi
+        
+      - name: Set target
+        run: yt target bbc-microbit-classic-gcc
+        
+      - name: Build
+        run: yt build
+        
+      - name: Deploy alpha to S3
+        if: github.ref == 'refs/heads/alpha'
+        run: sh deploy.sh alpha
+
+      - name: Deploy beta to S3
+        if: github.ref == 'refs/heads/beta'
+        run: sh deploy.sh beta
+
+      - name: Deploy master to S3
+        if: github.ref == 'refs/heads/master'
+        run: sh deploy.sh prod
