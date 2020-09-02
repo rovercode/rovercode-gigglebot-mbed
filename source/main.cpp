@@ -28,7 +28,7 @@ void onUartEvent(MicroBitEvent)
     if (msg == "disp")
     {
         msg = uart->readUntil(ManagedString("\n"));
-        uBit.display.scroll(msg);
+        uBit.display.scrollAsync(msg);
         uBit.display.print(IMAGE_HAPPY);
     }
     else
