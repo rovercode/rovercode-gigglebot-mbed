@@ -12,20 +12,31 @@ void onConnected(MicroBitEvent)
 {
     uBit.display.print(IMAGE_HAPPY);
     connected = 1;
-
-    ManagedString eom("\n");
-    uart->eventOn(eom, ASYNC);
+    uart->eventOn(ManagedString("\n"), ASYNC);
 }
 
 void onUartEvent(MicroBitEvent)
 {
-    ManagedString msg = uart->readUntil(ManagedString(":"));
+    ManagedString msg = uart->readUntil(ManagedString(":"), ASYNC);
+    if (msg.length() == 0)
+    {
+        // Invalid command. Throw out rx buffer.
+        uart->readUntil(ManagedString("\n"));
+        return;
+    }
+
     if (msg == "disp")
     {
         msg = uart->readUntil(ManagedString("\n"));
         uBit.display.scroll(msg);
         uBit.display.print(IMAGE_HAPPY);
     }
+    else
+    {
+        // Unknown command. Throw out rx buffer.
+        uart->readUntil(ManagedString("\n"));
+    }
+    
 }
 
 void onDisconnected(MicroBitEvent)
@@ -83,7 +94,7 @@ int main()
 
     uBit.display.print("R");
     uBit.sleep(2000);
-    uBit.display.scroll(microbit_friendly_name());
+    uBit.display.scrollAsync(microbit_friendly_name());
     uBit.display.print("R");
 
 
