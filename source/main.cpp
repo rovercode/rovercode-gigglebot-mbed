@@ -75,11 +75,26 @@ void onButtonAB(MicroBitEvent)
     uBit.display.scroll("!");
 }
 
+void onNewAccelData(MicroBitEvent)
+{
+    if (connected == 0)
+    {
+        return;
+    }
+    uBit.sleep(1);  // Prevents an 020 error. 🤷
+    Sample3D sample = uBit.accelerometer.getSample();
+    char buffer[20];
+    snprintf(buffer, 20, "accel:%d,%d,%d", sample.x, sample.y, sample.z);
+    uart->send(buffer);
+}
+
 
 int main()
 {
     // Initialise the micro:bit runtime.
     uBit.init();
+
+    // uBit.accelerometer.setPeriod(1000);  // In case you want to slow it down. Defaults to 20ms.
 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
@@ -87,6 +102,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
+    uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500
