@@ -15,6 +15,13 @@ void onConnected(MicroBitEvent)
     uart->eventOn(ManagedString("\n"), ASYNC);
 }
 
+void handleDisplay()
+{
+    ManagedString msg = uart->readUntil(ManagedString("\n"));
+    uBit.display.scrollAsync(msg);
+    uBit.display.print(IMAGE_HAPPY);
+}
+
 void onUartEvent(MicroBitEvent)
 {
     ManagedString msg = uart->readUntil(ManagedString(":"), ASYNC);
@@ -27,9 +34,7 @@ void onUartEvent(MicroBitEvent)
 
     if (msg == "disp")
     {
-        msg = uart->readUntil(ManagedString("\n"));
-        uBit.display.scrollAsync(msg);
-        uBit.display.print(IMAGE_HAPPY);
+        create_fiber(handleDisplay);
     }
     else
     {

@@ -5,11 +5,24 @@ The Rovercode service for GiggleBot, written directly on the Lancaster C/C++ mBe
 
 * [Install yotta](https://lancaster-university.github.io/microbit-docs/offline-toolchains/#yotta)
 
+##### Alternative Docker image
+
+```
+sudo docker build . -t yt
+```
+
 ## Build
 
 ```
 yt clean
 yt build
+```
+
+##### Alternative Docker container
+
+```
+sudo docker run --rm -v ${PWD}:/app yt clean
+sudo docker run --rm -v ${PWD}:/app yt build
 ```
 
 ## Copy hex to the micro:bit
