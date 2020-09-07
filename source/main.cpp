@@ -4,7 +4,24 @@
 MicroBit uBit;
 MicroBitUARTService *uart;
 
-const MicroBitImage IMAGE_HAPPY = MicroBitImage("0,0,0,0,0\n0,1,0,1,0\n0,0,0,0,0\n1,0,0,0,1\n0,1,1,1,0\n");  
+const MicroBitImage IMAGE_HAPPY = MicroBitImage("0,0,0,0,0\n0,1,0,1,0\n0,0,0,0,0\n1,0,0,0,1\n0,1,1,1,0\n");
+
+// I2C address of the Gigglebot
+const char I2C_ADDR = 0x04 << 1;
+
+// I2C commands for the Gigglebot
+enum GigglebotI2CCommands {
+  GET_FIRMWARE_VERSION = 1,
+  GET_MANUFACTURER,
+  GET_BOARD,
+  GET_VOLTAGE_BATTERY,
+  GET_LINE_SENSORS,
+  GET_LIGHT_SENSORS,
+  GET_MOTOR_STATUS_RIGHT,
+  GET_MOTOR_STATUS_LEFT,
+  SET_MOTOR_POWER,
+  SET_MOTOR_POWERS
+};
 
 int connected = 0;
 
@@ -22,6 +39,32 @@ void handleDisplay()
     uBit.display.print(IMAGE_HAPPY);
 }
 
+void setMotorPower(char motor) {
+    char buffer[3];
+    ManagedString msg = uart->readUntil(ManagedString("\n"));
+
+    buffer[0] = SET_MOTOR_POWER;
+    buffer[1] = motor;
+    buffer[2] = atoi(msg.toCharArray());
+
+    uBit.i2c.write(I2C_ADDR, buffer, 3);
+}
+
+void handleRightMotor()
+{
+    setMotorPower(0x01);
+}
+
+void handleLeftMotor()
+{
+    setMotorPower(0x02);
+}
+
+void handleBothMotors()
+{
+    setMotorPower(0x03);
+}
+
 void onUartEvent(MicroBitEvent)
 {
     ManagedString msg = uart->readUntil(ManagedString(":"), ASYNC);
@@ -36,12 +79,20 @@ void onUartEvent(MicroBitEvent)
     {
         create_fiber(handleDisplay);
     }
+    else if (msg == "right-motor") {
+        create_fiber(handleRightMotor);
+    }
+    else if (msg == "left-motor") {
+        create_fiber(handleLeftMotor);
+    }
+    else if (msg == "both-motors") {
+        create_fiber(handleBothMotors);
+    }
     else
     {
         // Unknown command. Throw out rx buffer.
         uart->readUntil(ManagedString("\n"));
     }
-    
 }
 
 void onDisconnected(MicroBitEvent)
