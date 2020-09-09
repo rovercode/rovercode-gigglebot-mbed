@@ -128,7 +128,7 @@ void onNewAccelData(MicroBitEvent)
     Sample3D sample = uBit.accelerometer.getSample();
     char buffer[20];
     snprintf(buffer, 20, "accel:%d,%d,%d", sample.x, sample.y, sample.z);
-    uart->send(buffer);
+    uart->send(buffer, ASYNC);
 }
 
 void onNewBatteryData(MicroBitEvent)
@@ -140,7 +140,7 @@ void onNewBatteryData(MicroBitEvent)
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[20];
     snprintf(buffer, 20, "battery-sens:%d", battery.getVoltage());
-    uart->send(buffer);
+    uart->send(buffer, ASYNC);
 }
 
 
@@ -157,7 +157,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
-    //uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
+    uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
     uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
 
     fiber_add_idle_component(&battery);
