@@ -10,6 +10,7 @@ class GigglebotBattery : public MicroBitComponent
 {
     MicroBitI2C i2c;
     uint16_t voltage;
+    uint16_t counter;
 
     public:
     GigglebotBattery(MicroBitI2C &_i2c);
