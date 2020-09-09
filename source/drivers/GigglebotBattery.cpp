@@ -3,7 +3,7 @@
 #include "inc/Gigglebot.h"
 #include "inc/drivers/GigglebotBattery.h"
 
-GigglebotBattery::GigglebotBattery(MicroBitI2C &_i2c) : i2c(_i2c), voltage(0), counter(0)
+GigglebotBattery::GigglebotBattery(MicroBitI2C &_i2c) : i2c(_i2c), voltage(0), counter(1000)
 {
 }
 
