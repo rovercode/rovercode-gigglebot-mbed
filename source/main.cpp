@@ -3,10 +3,12 @@
 
 #include "inc/Gigglebot.h"
 #include "inc/drivers/GigglebotBattery.h"
+#include "inc/drivers/GigglebotLightSensors.h"
 
 MicroBit uBit;
 MicroBitUARTService *uart;
 GigglebotBattery battery(uBit.i2c);
+GigglebotLightSensors lightSensors(uBit.i2c);
 
 const MicroBitImage IMAGE_HAPPY = MicroBitImage("0,0,0,0,0\n0,1,0,1,0\n0,0,0,0,0\n1,0,0,0,1\n0,1,1,1,0\n");
 
@@ -143,13 +145,25 @@ void onNewBatteryData(MicroBitEvent)
     uart->send(buffer, ASYNC);
 }
 
+void onNewLightSensorsData(MicroBitEvent)
+{
+    if (connected == 0)
+    {
+        return;
+    }
+    uBit.sleep(1);  // Prevents an 020 error. 🤷
+    char buffer[20];
+    snprintf(buffer, 20, "light-sens:%d,%d", lightSensors.getLeftReading(), lightSensors.getRightReading());
+    uart->send(buffer, ASYNC);
+}
+
 
 int main()
 {
     // Initialise the micro:bit runtime.
     uBit.init();
 
-    // uBit.accelerometer.setPeriod(1000);  // In case you want to slow it down. Defaults to 20ms.
+    uBit.accelerometer.setPeriod(500);  // milliseconds
 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
@@ -159,8 +173,10 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
     uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
     uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
+    uBit.messageBus.listen(GIGGLEBOT_ID_LIGHT_SENSORS, GIGGLEBOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
 
     fiber_add_idle_component(&battery);
+    fiber_add_idle_component(&lightSensors);
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500
