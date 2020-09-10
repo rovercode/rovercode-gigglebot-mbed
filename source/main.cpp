@@ -98,8 +98,7 @@ void onButtonA(MicroBitEvent)
     {
         return;
     }
-    uart->send(ManagedString("YES"));
-    uBit.display.scroll("Y");
+    uart->send(ManagedString("button:a"), ASYNC);
 }
 
 void onButtonB(MicroBitEvent)
@@ -108,18 +107,7 @@ void onButtonB(MicroBitEvent)
     {
         return;
     }
-    uart->send(ManagedString("NO"));
-    uBit.display.scroll("N");
-}
-
-void onButtonAB(MicroBitEvent)
-{
-    if (connected == 0)
-    {
-        return;
-    }
-    uart->send(ManagedString("GOT IT!!"));
-    uBit.display.scroll("!");
+    uart->send(ManagedString("button:b"), ASYNC);
 }
 
 void onNewAccelData(MicroBitEvent)
@@ -183,7 +171,6 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
-    uBit.messageBus.listen(MICROBIT_ID_BUTTON_AB, MICROBIT_BUTTON_EVT_CLICK, onButtonAB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
     uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
     uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
@@ -196,7 +183,7 @@ int main()
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500
-    uart = new MicroBitUARTService(*uBit.ble, 32, 32);
+    uart = new MicroBitUARTService(*uBit.ble, 32, 128);
 
     uBit.display.print("R");
     uBit.sleep(2000);
