@@ -3,7 +3,8 @@
 #include "inc/Gigglebot.h"
 #include "inc/drivers/GigglebotBattery.h"
 
-GigglebotBattery::GigglebotBattery(MicroBitI2C &_i2c) : i2c(_i2c), voltage(0), counter(1000)
+GigglebotBattery::GigglebotBattery(MicroBitI2C &_i2c) : i2c(_i2c), voltage(0),
+    counter(GIGGLEBOT_START_COUNT_BATTERY)
 {
 }
 
@@ -17,7 +18,7 @@ void GigglebotBattery::idleTick()
     char command = GET_VOLTAGE_BATTERY;
     char buffer[2];
 
-    if (++counter < 1000)
+    if (++counter < GIGGLEBOT_PERIOD_BATTERY)
     {
         return;
     }
