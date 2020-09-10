@@ -10,12 +10,12 @@ GigglebotLightSensors::GigglebotLightSensors(MicroBitI2C &_i2c) : i2c(_i2c), rea
 
 uint16_t GigglebotLightSensors::getLeftReading()
 {
-    return this->readings[0];
+    return this->readings[1];
 }
 
 uint16_t GigglebotLightSensors::getRightReading()
 {
-    return this->readings[1];
+    return this->readings[0];
 }
 
 void GigglebotLightSensors::idleTick()

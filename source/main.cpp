@@ -152,8 +152,8 @@ void onNewLightSensorsData(MicroBitEvent)
         return;
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
-    char buffer[20];
-    snprintf(buffer, 20, "light-sens:%d,%d", lightSensors.getLeftReading(), lightSensors.getRightReading());
+    char buffer[23];
+    snprintf(buffer, 23, "light-sens:%d,%d", lightSensors.getLeftReading(), lightSensors.getRightReading());
     uart->send(buffer, ASYNC);
 }
 
@@ -163,7 +163,7 @@ int main()
     // Initialise the micro:bit runtime.
     uBit.init();
 
-    uBit.accelerometer.setPeriod(500);  // milliseconds
+    uBit.accelerometer.setPeriod(1000);  // milliseconds
 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_DISCONNECTED, onDisconnected);
