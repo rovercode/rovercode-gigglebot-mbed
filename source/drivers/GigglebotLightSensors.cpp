@@ -4,7 +4,7 @@
 #include "inc/drivers/GigglebotLightSensors.h"
 
 GigglebotLightSensors::GigglebotLightSensors(MicroBitI2C &_i2c) : i2c(_i2c), readings {0, 0},
-    counter(GIGGLEBOT_START_COUNT_LIGHT_SENSORS)
+    counter(GIGGLEBOT_PERIOD_LIGHT_SENSORS - GIGGLEBOT_START_COUNT_LIGHT_SENSORS)
 {
 }
 

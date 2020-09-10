@@ -4,7 +4,7 @@
 #include "inc/drivers/GigglebotLineSensors.h"
 
 GigglebotLineSensors::GigglebotLineSensors(MicroBitI2C &_i2c) : i2c(_i2c), readings {0, 0},
-    counter(GIGGLEBOT_START_COUNT_LINE_SENSORS)
+    counter(GIGGLEBOT_PERIOD_LINE_SENSORS - GIGGLEBOT_START_COUNT_LINE_SENSORS)
 {
 }
 

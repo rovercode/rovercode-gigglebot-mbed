@@ -26,7 +26,7 @@ void onConnected(MicroBitEvent)
 void handleDisplay()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    uBit.display.scrollAsync(msg);
+    uBit.display.printAsync(msg, 500);
     uBit.display.print(IMAGE_HAPPY);
 }
 
@@ -189,7 +189,6 @@ int main()
     uBit.sleep(2000);
     uBit.display.scrollAsync(microbit_friendly_name());
     uBit.display.print("R");
-
 
     // If main exits, there may still be other fibers running or registered event handlers etc.
     // Simply release this fiber, which will mean we enter the scheduler. Worse case, we then
