@@ -9,7 +9,7 @@
 class GigglebotLightSensors : public MicroBitComponent
 {
     MicroBitI2C i2c;
-    uint8_t readings [2];
+    uint16_t readings [2];
     uint16_t counter;
 
     public:
