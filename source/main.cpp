@@ -172,7 +172,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
-    uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
+    // uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
     uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
     uBit.messageBus.listen(GIGGLEBOT_ID_LIGHT_SENSORS, GIGGLEBOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
     uBit.messageBus.listen(GIGGLEBOT_ID_LINE_SENSORS, GIGGLEBOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
