@@ -2,12 +2,14 @@
 #include "MicroBitUARTService.h"
 
 #include "inc/Gigglebot.h"
+#include "inc/drivers/GigglebotMotors.h"
 #include "inc/drivers/GigglebotBattery.h"
 #include "inc/drivers/GigglebotLightSensors.h"
 #include "inc/drivers/GigglebotLineSensors.h"
 
 MicroBit uBit;
 MicroBitUARTService *uart;
+GigglebotMotors motors(uBit.i2c);
 GigglebotBattery battery(uBit.i2c);
 GigglebotLightSensors lightSensors(uBit.i2c);
 GigglebotLineSensors lineSensors(uBit.i2c);
@@ -31,14 +33,8 @@ void handleDisplay()
 }
 
 void setMotorPower(char motor) {
-    char buffer[3];
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-
-    buffer[0] = SET_MOTOR_POWER;
-    buffer[1] = motor;
-    buffer[2] = atoi(msg.toCharArray());
-
-    uBit.i2c.write(I2C_ADDR, buffer, 3);
+    motors.setMotorPower(motor, atoi(msg.toCharArray()));
 }
 
 void handleRightMotor()
