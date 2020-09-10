@@ -98,7 +98,7 @@ void onButtonA(MicroBitEvent)
     {
         return;
     }
-    uart->send(ManagedString("button:a"));
+    uart->send(ManagedString("button:a"), ASYNC);
 }
 
 void onButtonB(MicroBitEvent)
@@ -107,7 +107,7 @@ void onButtonB(MicroBitEvent)
     {
         return;
     }
-    uart->send(ManagedString("button:b"));
+    uart->send(ManagedString("button:b"), ASYNC);
 }
 
 void onNewAccelData(MicroBitEvent)
@@ -183,7 +183,7 @@ int main()
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500
-    uart = new MicroBitUARTService(*uBit.ble, 32, 32);
+    uart = new MicroBitUARTService(*uBit.ble, 32, 128);
 
     uBit.display.print("R");
     uBit.sleep(2000);
