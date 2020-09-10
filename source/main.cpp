@@ -26,7 +26,7 @@ void onConnected(MicroBitEvent)
 void handleDisplay()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    uBit.display.scrollAsync(msg);
+    uBit.display.printAsync(msg, 500);
     uBit.display.print(IMAGE_HAPPY);
 }
 
@@ -172,7 +172,7 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_A, MICROBIT_BUTTON_EVT_CLICK, onButtonA);
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
-    uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
+    // uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
     uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
     uBit.messageBus.listen(GIGGLEBOT_ID_LIGHT_SENSORS, GIGGLEBOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
     uBit.messageBus.listen(GIGGLEBOT_ID_LINE_SENSORS, GIGGLEBOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
@@ -189,7 +189,6 @@ int main()
     uBit.sleep(2000);
     uBit.display.scrollAsync(microbit_friendly_name());
     uBit.display.print("R");
-
 
     // If main exits, there may still be other fibers running or registered event handlers etc.
     // Simply release this fiber, which will mean we enter the scheduler. Worse case, we then
