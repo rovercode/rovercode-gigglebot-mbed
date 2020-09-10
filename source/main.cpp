@@ -34,7 +34,7 @@ void handleDisplay()
 
 void setMotorPower(char motor) {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    motors.setMotorPower(motor, atoi(msg.toCharArray()));
+    motors.setMotorPower(motor, atoi(msg.toCharArray()), true);
 }
 
 void handleRightMotor()
