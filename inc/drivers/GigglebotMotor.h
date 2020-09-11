@@ -14,10 +14,10 @@ class GigglebotMotor
 {
     MicroBitI2C i2c;
     const static short int SCALED_POWERS[];
+    GigglebotMotorId motorId;
 
     public:
     GigglebotMotor(MicroBitI2C &_i2c, GigglebotMotorId _motorId);
-    GigglebotMotorId motorId;
 
     /**
      * @param power ranges -100 to 100
