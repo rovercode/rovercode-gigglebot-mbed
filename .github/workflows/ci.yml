@@ -1,0 +1,16 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  cpp-lint:
+    name: C++ Lint
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Install clang-format
+      run: apt install clang-format
+
+    - name: clang-format
+      run: clang-format --dry-run --verbose source/* source/drivers/*
