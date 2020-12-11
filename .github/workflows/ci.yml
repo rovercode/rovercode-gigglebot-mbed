@@ -13,4 +13,4 @@ jobs:
       run: sudo apt-get install clang-format
 
     - name: clang-format
-      run: clang-format --dry-run --verbose source/* source/drivers/*
+      run: clang-format --dry-run --verbose source/*.cpp source/drivers/*.cpp
