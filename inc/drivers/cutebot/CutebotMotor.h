@@ -5,20 +5,22 @@
 #include "MicroBitI2C.h"
 #include "inc/drivers/Motor.h"
 
-enum GigglebotMotorId {
-  MOTOR_ID_LEFT = 1,
-  MOTOR_ID_RIGHT,
+enum CutebotMotorId {
+  MOTOR_ID_RIGHT = 1,
+  MOTOR_ID_LEFT,
   MOTOR_ID_BOTH
 };
 
-class GigglebotMotor : public Motor
+class CutebotMotor : public Motor
 {
     MicroBitI2C i2c;
-    const static short int SCALED_POWERS[];
-    GigglebotMotorId motorId;
+    CutebotMotorId motorId;
+
+    private:
+    void setSingleMotorPower(int motorId, int power);
 
     public:
-    GigglebotMotor(MicroBitI2C &_i2c, GigglebotMotorId _motorId);
+    CutebotMotor(MicroBitI2C &_i2c, CutebotMotorId _motorId);
 
     /**
      * @param power ranges -100 to 100

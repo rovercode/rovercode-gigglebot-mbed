@@ -30,13 +30,13 @@ const short int GigglebotMotor::SCALED_POWERS [201] = {
     93,94,94,95,95,96,97,97,98,99,99,100
 };
 
-void GigglebotMotor::setMotorPower(int power, bool scaled)
+void GigglebotMotor::setMotorPower(int power)
 {
     char buffer[3];
 
     buffer[0] = SET_MOTOR_POWER;
     buffer[1] = this->motorId;
-    buffer[2] = scaled ? SCALED_POWERS[power + 100] : power;
+    buffer[2] = SCALED_POWERS[power + 100];
 
     this->i2c.write(I2C_ADDR, buffer, 3);
 }

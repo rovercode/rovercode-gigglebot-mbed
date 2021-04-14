@@ -2,6 +2,8 @@
 #include "MicroBitUARTService.h"
 
 #include "inc/Gigglebot.h"
+#include "inc/drivers/Motor.h"
+#include "inc/drivers/cutebot/CutebotMotor.h"
 #include "inc/drivers/gigglebot/GigglebotMotor.h"
 #include "inc/drivers/gigglebot/GigglebotBattery.h"
 #include "inc/drivers/gigglebot/GigglebotLightSensors.h"
@@ -9,9 +11,9 @@
 
 MicroBit uBit;
 MicroBitUARTService *uart;
-GigglebotMotor leftMotor(uBit.i2c,  MOTOR_ID_LEFT);
-GigglebotMotor rightMotor(uBit.i2c, MOTOR_ID_RIGHT);
-GigglebotMotor bothMotors(uBit.i2c, MOTOR_ID_BOTH);
+Motor* leftMotor;
+Motor* rightMotor;
+Motor* bothMotors;
 GigglebotBattery battery(uBit.i2c);
 GigglebotLightSensors lightSensors(uBit.i2c);
 GigglebotLineSensors lineSensors(uBit.i2c);
@@ -37,19 +39,19 @@ void handleDisplay()
 void handleRightMotor()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    rightMotor.setMotorPower(atoi(msg.toCharArray()), true);
+    rightMotor->setMotorPower(atoi(msg.toCharArray()));
 }
 
 void handleLeftMotor()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    leftMotor.setMotorPower(atoi(msg.toCharArray()), true);
+    leftMotor->setMotorPower(atoi(msg.toCharArray()));
 }
 
 void handleBothMotors()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    bothMotors.setMotorPower(atoi(msg.toCharArray()), true);
+    bothMotors->setMotorPower(atoi(msg.toCharArray()));
 }
 
 void onUartEvent(MicroBitEvent)
@@ -160,6 +162,13 @@ int main()
 {
     // Initialise the micro:bit runtime.
     uBit.init();
+
+    leftMotor = new GigglebotMotor(uBit.i2c,  MOTOR_ID_LEFT);
+    rightMotor = new GigglebotMotor(uBit.i2c,  MOTOR_ID_RIGHT);
+    bothMotors = new GigglebotMotor(uBit.i2c,  MOTOR_ID_BOTH);
+    // leftMotor = new CutebotMotor(uBit.i2c,  MOTOR_ID_LEFT);
+    // rightMotor = new CutebotMotor(uBit.i2c,  MOTOR_ID_RIGHT);
+    // bothMotors = new CutebotMotor(uBit.i2c,  MOTOR_ID_BOTH);
 
     uBit.accelerometer.setPeriod(1000);  // milliseconds
 
