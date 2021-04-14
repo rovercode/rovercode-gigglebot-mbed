@@ -1,7 +1,7 @@
 #include "MicroBitEvent.h"
 
 #include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotLineSensors.h"
+#include "inc/drivers/gigglebot/GigglebotLineSensors.h"
 
 GigglebotLineSensors::GigglebotLineSensors(MicroBitI2C &_i2c) : i2c(_i2c), readings {0, 0},
     counter(GIGGLEBOT_PERIOD_LINE_SENSORS - GIGGLEBOT_START_COUNT_LINE_SENSORS)

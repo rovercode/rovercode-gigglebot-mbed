@@ -2,10 +2,10 @@
 #include "MicroBitUARTService.h"
 
 #include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotMotor.h"
-#include "inc/drivers/GigglebotBattery.h"
-#include "inc/drivers/GigglebotLightSensors.h"
-#include "inc/drivers/GigglebotLineSensors.h"
+#include "inc/drivers/gigglebot/GigglebotMotor.h"
+#include "inc/drivers/gigglebot/GigglebotBattery.h"
+#include "inc/drivers/gigglebot/GigglebotLightSensors.h"
+#include "inc/drivers/gigglebot/GigglebotLineSensors.h"
 
 MicroBit uBit;
 MicroBitUARTService *uart;

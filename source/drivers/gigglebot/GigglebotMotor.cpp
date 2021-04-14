@@ -1,7 +1,7 @@
 #include "MicroBitEvent.h"
 
 #include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotMotor.h"
+#include "inc/drivers/gigglebot/GigglebotMotor.h"
 
 GigglebotMotor::GigglebotMotor(MicroBitI2C &_i2c, GigglebotMotorId _motorId) : i2c(_i2c), motorId(_motorId)
 {

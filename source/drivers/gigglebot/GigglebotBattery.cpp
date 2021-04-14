@@ -1,7 +1,7 @@
 #include "MicroBitEvent.h"
 
 #include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotBattery.h"
+#include "inc/drivers/gigglebot/GigglebotBattery.h"
 
 GigglebotBattery::GigglebotBattery(MicroBitI2C &_i2c) : i2c(_i2c), voltage(0),
     counter(GIGGLEBOT_PERIOD_BATTERY - GIGGLEBOT_START_COUNT_BATTERY)

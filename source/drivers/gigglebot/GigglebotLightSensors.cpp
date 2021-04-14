@@ -1,7 +1,7 @@
 #include "MicroBitEvent.h"
 
 #include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotLightSensors.h"
+#include "inc/drivers/gigglebot/GigglebotLightSensors.h"
 
 GigglebotLightSensors::GigglebotLightSensors(MicroBitI2C &_i2c) : i2c(_i2c), readings {0, 0},
     counter(GIGGLEBOT_PERIOD_LIGHT_SENSORS - GIGGLEBOT_START_COUNT_LIGHT_SENSORS)
