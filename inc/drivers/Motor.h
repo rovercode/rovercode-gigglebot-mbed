@@ -10,7 +10,6 @@ class Motor
 
     /**
      * @param power ranges -100 to 100
-     * @param scale adjust the power value to avoid the lowest power settings
      */
     virtual void setMotorPower(int power) = 0;
 };

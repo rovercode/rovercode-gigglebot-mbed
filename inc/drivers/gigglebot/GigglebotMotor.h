@@ -6,9 +6,9 @@
 #include "inc/drivers/Motor.h"
 
 enum GigglebotMotorId {
-  MOTOR_ID_LEFT = 1,
-  MOTOR_ID_RIGHT,
-  MOTOR_ID_BOTH
+  GIGGLEBOT_MOTOR_ID_RIGHT = 1,
+  GIGGLEBOT_MOTOR_ID_LEFT,
+  GIGGLEBOT_MOTOR_ID_BOTH
 };
 
 class GigglebotMotor : public Motor

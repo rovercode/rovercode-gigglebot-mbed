@@ -1,6 +1,6 @@
 #include "MicroBitEvent.h"
 
-#include "inc/Gigglebot.h"
+#include "inc/drivers/gigglebot/Gigglebot.h"
 #include "inc/drivers/gigglebot/GigglebotMotor.h"
 
 GigglebotMotor::GigglebotMotor(MicroBitI2C &_i2c, GigglebotMotorId _motorId) : i2c(_i2c), motorId(_motorId)
@@ -38,5 +38,5 @@ void GigglebotMotor::setMotorPower(int power)
     buffer[1] = this->motorId;
     buffer[2] = SCALED_POWERS[power + 100];
 
-    this->i2c.write(I2C_ADDR, buffer, 3);
+    this->i2c.write(GIGGLEBOT_I2C_ADDR, buffer, 3);
 }
