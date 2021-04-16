@@ -156,11 +156,14 @@ int main()
     uBit.init();
 
     Gigglebot* gigglebot = new Gigglebot(uBit.i2c);
-    Cutebot* cutebot = new Cutebot(uBit.i2c);
     if (gigglebot->isDetected()) {
         bot = gigglebot;
-    } else if (cutebot->isDetected()) {
-        bot = cutebot;
+    } else  {
+        delete gigglebot;
+        Cutebot* cutebot = new Cutebot(uBit.i2c);
+        if (cutebot->isDetected()) {
+            bot = cutebot;
+        }
     }
 
     uBit.accelerometer.setPeriod(1000);  // milliseconds
