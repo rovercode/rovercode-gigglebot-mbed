@@ -12,7 +12,7 @@ enum CutebotMotorId {
 
 class CutebotMotor : public Motor
 {
-    MicroBitI2C i2c;
+    MicroBitI2C &i2c;
     CutebotMotorId motorId;
 
     private:

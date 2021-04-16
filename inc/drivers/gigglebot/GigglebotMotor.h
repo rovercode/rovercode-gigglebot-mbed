@@ -13,7 +13,7 @@ enum GigglebotMotorId {
 
 class GigglebotMotor : public Motor
 {
-    MicroBitI2C i2c;
+    MicroBitI2C &i2c;
     const static short int SCALED_POWERS[];
     GigglebotMotorId motorId;
 
