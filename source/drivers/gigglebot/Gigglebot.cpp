@@ -6,8 +6,13 @@
 #include "inc/drivers/gigglebot/GigglebotLineSensors.h"
 
 Gigglebot::Gigglebot(MicroBitI2C &i2c) {
-    /* TODO: Try to read Gigglebot FW version to determine if it's present */
-    this->setDetected(true);
+    char buffer[2];
+    int result = i2c.read(GIGGLEBOT_I2C_ADDR, buffer, 2);
+    if (result == MICROBIT_OK) {
+        this->setDetected(true);
+    } else {
+        this->setDetected(false);
+    }
 
     if (this->isDetected()) {
         this->leftMotor = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_LEFT);
