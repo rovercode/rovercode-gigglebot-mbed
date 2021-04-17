@@ -3,7 +3,7 @@
 #include "inc/drivers/cutebot/CutebotMotor.h"
 
 Cutebot::Cutebot(MicroBitI2C &_i2c) : i2c(_i2c) {
-    int result = this->setRightHeadlightColor(255, 255, 255);
+    int result = this->setRightHeadlightColor(0, 0, 0);
     if (result == MICROBIT_OK) {
         this->setDetected(true);
     } else {
@@ -42,16 +42,6 @@ int Cutebot::setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
     return result;
 }
 
-uint16_t Cutebot::getLeftLightSensorReading() {
-    /* Not implemented on this bot */
-    return 0;
-}
-
-uint16_t Cutebot::getRightLightSensorReading() {
-    /* Not implemented on this bot */
-    return 0;
-}
-
 uint16_t Cutebot::getLeftLineSensorReading() {
     /* TODO */
     return 0;
@@ -59,10 +49,5 @@ uint16_t Cutebot::getLeftLineSensorReading() {
 
 uint16_t Cutebot::getRightLineSensorReading() {
     /* TODO */
-    return 0;
-}
-
-uint16_t Cutebot::getBatteryVoltage() {
-    /* Not implemented on this bot */
     return 0;
 }

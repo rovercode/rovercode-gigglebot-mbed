@@ -21,11 +21,11 @@ class Bot {
   virtual void setBothMotorsPower(int power) = 0;
   virtual int setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) { return 0; };
   virtual int setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) { return 0; };
-  virtual uint16_t getLeftLightSensorReading() = 0;
-  virtual uint16_t getRightLightSensorReading() = 0;
+  virtual uint16_t getLeftLightSensorReading() { return 0; };
+  virtual uint16_t getRightLightSensorReading() { return 0; };
   virtual uint16_t getLeftLineSensorReading() = 0;
   virtual uint16_t getRightLineSensorReading() = 0;
-  virtual uint16_t getBatteryVoltage() = 0;
+  virtual uint16_t getBatteryVoltage() { return 0; };
 
   void setDetected(bool detected) {
     this->detected = detected;

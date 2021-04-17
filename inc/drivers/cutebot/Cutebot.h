@@ -29,11 +29,8 @@ class Cutebot : public Bot
   void setBothMotorsPower(int power);
   int setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   int setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
-  uint16_t getLeftLightSensorReading();
-  uint16_t getRightLightSensorReading();
   uint16_t getLeftLineSensorReading();
   uint16_t getRightLineSensorReading();
-  uint16_t getBatteryVoltage();
 };
 
 #endif
