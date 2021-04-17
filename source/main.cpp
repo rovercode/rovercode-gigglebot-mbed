@@ -155,15 +155,14 @@ int main()
     // Initialise the micro:bit runtime.
     uBit.init();
 
-    Gigglebot* gigglebot = new Gigglebot(uBit.i2c);
-    if (gigglebot->isDetected()) {
-        bot = gigglebot;
-    } else  {
-        delete gigglebot;
-        Cutebot* cutebot = new Cutebot(uBit.i2c);
-        if (cutebot->isDetected()) {
-            bot = cutebot;
-        }
+    bot = new Gigglebot(uBit.i2c);
+    if (!bot->isDetected()) {
+        delete bot;
+        bot = new Cutebot(uBit.i2c);
+        if (!bot->isDetected()) {
+            delete bot;
+            uBit.display.scrollAsync("NO BOT");
+	}
     }
 
     uBit.accelerometer.setPeriod(1000);  // milliseconds
