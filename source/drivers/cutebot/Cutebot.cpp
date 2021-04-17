@@ -2,9 +2,13 @@
 #include "inc/drivers/cutebot/Cutebot.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
 
-Cutebot::Cutebot(MicroBitI2C &i2c) {
-    /* TODO: Try to read something on the Cutebot to determine if it's present */
-    this->setDetected(false);
+Cutebot::Cutebot(MicroBitI2C &_i2c) : i2c(_i2c) {
+    int result = this->setRightHeadlightColor(255, 255, 255);
+    if (result == MICROBIT_OK) {
+        this->setDetected(true);
+    } else {
+        this->setDetected(false);
+    }
 
     if (this->isDetected()) {
         this->leftMotor = new CutebotMotor(i2c,  CUTEBOT_MOTOR_ID_LEFT);
@@ -26,14 +30,16 @@ void Cutebot::setBothMotorsPower(int power) {
     this->leftMotor->setMotorPower(power);
 }
 
-void Cutebot::setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
-    /* TODO */
-    return;
+int Cutebot::setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
+    const char buffer[] = {SET_LEFT_HEADLIGHT, red, green, blue};
+    int result = this->i2c.write(CUTEBOT_I2C_ADDR, buffer, 4);
+    return result;
 }
 
-void Cutebot::setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
-    /* TODO */
-    return;
+int Cutebot::setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
+    const char buffer[] = {SET_RIGHT_HEADLIGHT, red, green, blue};
+    int result = this->i2c.write(CUTEBOT_I2C_ADDR, buffer, 4);
+    return result;
 }
 
 uint16_t Cutebot::getLeftLightSensorReading() {

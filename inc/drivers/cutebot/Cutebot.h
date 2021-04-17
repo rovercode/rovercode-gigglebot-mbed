@@ -5,16 +5,19 @@
 #include "inc/drivers/cutebot/CutebotMotor.h"
 
 // I2C address of the Cutebot
-const char CUTEBOT_I2C_ADDR = 0x10;
+const char CUTEBOT_I2C_ADDR = 0x10 << 1;
 
 // I2C commands for the Cutebot
 enum CutebotI2CCommands {
   SET_LEFT_MOTOR_POWER = 1,
-  SET_RIGHT_MOTOR_POWER
+  SET_RIGHT_MOTOR_POWER,
+  SET_LEFT_HEADLIGHT = 4,
+  SET_RIGHT_HEADLIGHT = 8,
 };
 
 class Cutebot : public Bot
 {
+  MicroBitI2C &i2c;
   CutebotMotor* leftMotor;
   CutebotMotor* rightMotor;
 
@@ -24,8 +27,8 @@ class Cutebot : public Bot
   void setRightMotorPower(int power);
   void setLeftMotorPower(int power);
   void setBothMotorsPower(int power);
-  void setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
-  void setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
+  int setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
+  int setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   uint16_t getLeftLightSensorReading();
   uint16_t getRightLightSensorReading();
   uint16_t getLeftLineSensorReading();

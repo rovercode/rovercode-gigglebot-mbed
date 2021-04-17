@@ -46,8 +46,6 @@ class Gigglebot : public Bot
   void setRightMotorPower(int power);
   void setLeftMotorPower(int power);
   void setBothMotorsPower(int power);
-  void setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
-  void setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   uint16_t getLeftLightSensorReading();
   uint16_t getRightLightSensorReading();
   uint16_t getLeftLineSensorReading();

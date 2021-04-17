@@ -39,16 +39,6 @@ void Gigglebot::setBothMotorsPower(int power) {
     this->bothMotors->setMotorPower(power);
 }
 
-void Gigglebot::setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
-    /* Not available on this bot */
-    return;
-}
-
-void Gigglebot::setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
-    /* Not available on this bot */
-    return;
-}
-
 uint16_t Gigglebot::getLeftLightSensorReading() {
     return this->lightSensors->getLeftReading();
 }
