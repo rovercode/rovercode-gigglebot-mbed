@@ -21,6 +21,7 @@ class Bot {
   virtual void setBothMotorsPower(int power) = 0;
   virtual int setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) { return 0; };
   virtual int setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) { return 0; };
+  virtual int setBothHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) { return 0; };
   virtual uint16_t getLeftLightSensorReading() { return 0; };
   virtual uint16_t getRightLightSensorReading() { return 0; };
   virtual uint16_t getLeftLineSensorReading() = 0;

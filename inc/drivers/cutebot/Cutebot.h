@@ -2,6 +2,7 @@
 #define CUTEBOT_H
 
 #include "inc/drivers/Bot.h"
+#include "inc/drivers/cutebot/CutebotHeadlight.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
 
 // I2C address of the Cutebot
@@ -20,15 +21,19 @@ class Cutebot : public Bot
   MicroBitI2C &i2c;
   CutebotMotor* leftMotor;
   CutebotMotor* rightMotor;
+  CutebotHeadlight *leftHeadlight;
+  CutebotHeadlight *rightHeadlight;
 
   public:
 
   Cutebot(MicroBitI2C &_i2c);
+  virtual ~Cutebot();
   void setRightMotorPower(int power);
   void setLeftMotorPower(int power);
   void setBothMotorsPower(int power);
   int setLeftHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   int setRightHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
+  int setBothHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   uint16_t getLeftLineSensorReading();
   uint16_t getRightLineSensorReading();
 };
