@@ -14,17 +14,27 @@ Gigglebot::Gigglebot(MicroBitI2C &i2c) {
         this->setDetected(false);
     }
 
-    if (this->isDetected()) {
-        this->leftMotor = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_LEFT);
-        this->rightMotor = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_RIGHT);
-        this->bothMotors = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_BOTH);
-        this->lineSensors = new GigglebotLineSensors(i2c);
-        this->lightSensors = new GigglebotLightSensors(i2c);
-        this->battery = new GigglebotBattery(i2c);
-        fiber_add_idle_component(lineSensors);
-        fiber_add_idle_component(lightSensors);
-        fiber_add_idle_component(battery);
-    }
+    this->leftMotor = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_LEFT);
+    this->rightMotor = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_RIGHT);
+    this->bothMotors = new GigglebotMotor(i2c,  GIGGLEBOT_MOTOR_ID_BOTH);
+    this->lineSensors = new GigglebotLineSensors(i2c);
+    this->lightSensors = new GigglebotLightSensors(i2c);
+    this->battery = new GigglebotBattery(i2c);
+    fiber_add_idle_component(lineSensors);
+    fiber_add_idle_component(lightSensors);
+    fiber_add_idle_component(battery);
+}
+
+Gigglebot::~Gigglebot() {
+    fiber_remove_idle_component(lineSensors);
+    fiber_remove_idle_component(lightSensors);
+    fiber_remove_idle_component(battery);
+    delete this->leftMotor;
+    delete this->rightMotor;
+    delete this->bothMotors;
+    delete this->lineSensors;
+    delete this->lightSensors;
+    delete this->battery;
 }
 
 void Gigglebot::setRightMotorPower(int power) {

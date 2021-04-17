@@ -43,6 +43,7 @@ class Gigglebot : public Bot
   public:
 
   Gigglebot(MicroBitI2C &_i2c);
+  virtual ~Gigglebot();
   void setRightMotorPower(int power);
   void setLeftMotorPower(int power);
   void setBothMotorsPower(int power);

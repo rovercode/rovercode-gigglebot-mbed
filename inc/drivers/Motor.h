@@ -7,6 +7,7 @@
 class Motor
 {
     public:
+    virtual ~Motor() {}
 
     /**
      * @param power ranges -100 to 100
