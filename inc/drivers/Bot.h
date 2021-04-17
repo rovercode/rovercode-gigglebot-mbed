@@ -15,6 +15,7 @@ class Bot {
 
   public:
 
+  virtual ~Bot() {}
   virtual void setRightMotorPower(int power) = 0;
   virtual void setLeftMotorPower(int power) = 0;
   virtual void setBothMotorsPower(int power) = 0;
