@@ -14,7 +14,7 @@ void CutebotMotor::setMotorPower(int power)
     char buffer[4];
 
     buffer[0] = this->motorId;
-    buffer[0] = power > 0 ? 0x02 : 0x01;
+    buffer[1] = power > 0 ? 0x02 : 0x01;
     buffer[2] = power > 0 ? power : power * -1;
     buffer[3] = 0;
 
