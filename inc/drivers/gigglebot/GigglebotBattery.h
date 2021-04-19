@@ -4,8 +4,6 @@
 #include "MicroBitComponent.h"
 #include "MicroBitI2C.h"
 
-#define GIGGLEBOT_BATTERY_EVT_UPDATE         1
-
 class GigglebotBattery : public MicroBitComponent
 {
     MicroBitI2C i2c;
