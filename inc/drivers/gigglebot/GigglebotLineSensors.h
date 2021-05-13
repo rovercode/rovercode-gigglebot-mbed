@@ -6,7 +6,7 @@
 
 class GigglebotLineSensors : public MicroBitComponent
 {
-    MicroBitI2C i2c;
+    MicroBitI2C &i2c;
     uint16_t readings [2];
     uint16_t counter;
 

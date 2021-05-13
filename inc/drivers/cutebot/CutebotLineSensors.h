@@ -6,7 +6,7 @@
 
 class CutebotLineSensors : public MicroBitComponent
 {
-    MicroBitIO io;
+    MicroBitIO &io;
     uint16_t readings [2];
     uint16_t counter;
 
