@@ -2,8 +2,9 @@
 #include "inc/drivers/cutebot/Cutebot.h"
 #include "inc/drivers/cutebot/CutebotHeadlight.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
+#include "inc/drivers/cutebot/CutebotLineSensors.h"
 
-Cutebot::Cutebot(MicroBitI2C &_i2c) : i2c(_i2c) {
+Cutebot::Cutebot(MicroBitI2C &_i2c, MicroBitIO &_io) : i2c(_i2c), io(_io) {
     this->leftHeadlight = new CutebotHeadlight(i2c, CUTEBOT_HEADLIGHT_ID_LEFT);
     this->rightHeadlight = new CutebotHeadlight(i2c, CUTEBOT_HEADLIGHT_ID_RIGHT);
 
@@ -16,7 +17,9 @@ Cutebot::Cutebot(MicroBitI2C &_i2c) : i2c(_i2c) {
 
     this->leftMotor = new CutebotMotor(i2c,  CUTEBOT_MOTOR_ID_LEFT);
     this->rightMotor = new CutebotMotor(i2c,  CUTEBOT_MOTOR_ID_RIGHT);
-    /* TODO: Add sensors */
+
+    this->lineSensors = new CutebotLineSensors(io);
+    fiber_add_idle_component(lineSensors);
 }
 
 Cutebot::~Cutebot() {
@@ -24,6 +27,7 @@ Cutebot::~Cutebot() {
     delete this->rightMotor;
     delete this->leftHeadlight;
     delete this->rightHeadlight;
+    delete this->lineSensors;
 }
 
 void Cutebot::setRightMotorPower(int power) {
@@ -53,11 +57,9 @@ int Cutebot::setBothHeadlightColor(uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 uint16_t Cutebot::getLeftLineSensorReading() {
-    /* TODO */
-    return 0;
+    return this->lineSensors->getLeftReading();
 }
 
 uint16_t Cutebot::getRightLineSensorReading() {
-    /* TODO */
-    return 0;
+    return this->lineSensors->getRightReading();
 }

@@ -158,11 +158,11 @@ int main()
     bot = new Gigglebot(uBit.i2c);
     if (!bot->isDetected()) {
         delete bot;
-        bot = new Cutebot(uBit.i2c);
+        bot = new Cutebot(uBit.i2c, uBit.io);
         if (!bot->isDetected()) {
             delete bot;
             uBit.display.scrollAsync("NO BOT");
-	}
+	    }
     }
 
     uBit.accelerometer.setPeriod(1000);  // milliseconds
