@@ -46,6 +46,37 @@ void handleBothMotors()
     bot->setBothMotorsPower(atoi(msg.toCharArray()));
 }
 
+void parseRgb(uint8_t *red, uint8_t *green, uint8_t *blue)
+{
+    ManagedString redString = uart->readUntil(ManagedString(":"));
+    *red = atoi(redString.toCharArray());
+    ManagedString greenString = uart->readUntil(ManagedString(":"));
+    *green = atoi(greenString.toCharArray());
+    ManagedString blueString = uart->readUntil(ManagedString("\n"));
+    *blue = atoi(blueString.toCharArray());
+}
+
+void handleLeftHeadlight()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setLeftHeadlightColor(red, green, blue);
+}
+
+void handleRightHeadlight()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setRightHeadlightColor(red, green, blue);
+}
+
+void handleBothHeadlights()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setBothHeadlightColor(red, green, blue);
+}
+
 void onUartEvent(MicroBitEvent)
 {
     ManagedString msg = uart->readUntil(ManagedString(":"), ASYNC);
@@ -68,6 +99,15 @@ void onUartEvent(MicroBitEvent)
     }
     else if (msg == "both-motors") {
         create_fiber(handleBothMotors);
+    }
+    else if (msg == "left-hl") {
+        create_fiber(handleLeftHeadlight);
+    }
+    else if (msg == "right-hl") {
+        create_fiber(handleRightHeadlight);
+    }
+    else if (msg == "both-hl") {
+        create_fiber(handleBothHeadlights);
     }
     else
     {
