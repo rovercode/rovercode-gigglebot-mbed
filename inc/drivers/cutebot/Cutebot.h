@@ -4,6 +4,12 @@
 #include "inc/drivers/Bot.h"
 #include "inc/drivers/cutebot/CutebotHeadlight.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
+#include "inc/drivers/cutebot/CutebotLineSensors.h"
+
+// Reference: https://github.com/elecfreaks/pxt-cutebot
+
+#define CUTEBOT_PERIOD_LINE_SENSORS       500
+#define CUTEBOT_START_COUNT_LINE_SENSORS  300
 
 // I2C address of the Cutebot
 const char CUTEBOT_I2C_ADDR = 0x10 << 1;
@@ -19,14 +25,16 @@ enum CutebotI2CCommands {
 class Cutebot : public Bot
 {
   MicroBitI2C &i2c;
+  MicroBitIO &io;
   CutebotMotor* leftMotor;
   CutebotMotor* rightMotor;
   CutebotHeadlight *leftHeadlight;
   CutebotHeadlight *rightHeadlight;
+  CutebotLineSensors *lineSensors;
 
   public:
 
-  Cutebot(MicroBitI2C &_i2c);
+  Cutebot(MicroBitI2C &_i2c, MicroBitIO &_io);
   virtual ~Cutebot();
   void setRightMotorPower(int power);
   void setLeftMotorPower(int power);

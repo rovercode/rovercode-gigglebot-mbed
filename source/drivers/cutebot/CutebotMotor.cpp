@@ -3,8 +3,6 @@
 #include "inc/drivers/cutebot/Cutebot.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
 
-/* Reference: https://github.com/elecfreaks/pxt-cutebot */
-
 CutebotMotor::CutebotMotor(MicroBitI2C &_i2c, CutebotMotorId _motorId) : i2c(_i2c), motorId(_motorId)
 {
 }
