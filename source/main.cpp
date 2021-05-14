@@ -162,7 +162,7 @@ int main()
         if (!bot->isDetected()) {
             delete bot;
             uBit.display.scrollAsync("NO BOT");
-	    }
+        }
     }
 
     uBit.accelerometer.setPeriod(1000);  // milliseconds
