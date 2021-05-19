@@ -149,7 +149,7 @@ void onNewAccelData(MicroBitEvent)
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     Sample3D sample = uBit.accelerometer.getSample();
     char buffer[20];
-    snprintf(buffer, 20, "accel:%d,%d,%d", sample.x, sample.y, sample.z);
+    snprintf(buffer, sizeof(buffer), "accel:%d,%d,%d", sample.x, sample.y, sample.z);
     uart->send(buffer, ASYNC);
 }
 
@@ -161,7 +161,7 @@ void onNewBatteryData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[20];
-    snprintf(buffer, 20, "battery-sens:%d", bot->getBatteryVoltage());
+    snprintf(buffer, sizeof(buffer), "battery-sens:%d", bot->getBatteryVoltage());
     uart->send(buffer, ASYNC);
 }
 
@@ -173,7 +173,7 @@ void onNewLightSensorsData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[23];
-    snprintf(buffer, 23, "light-sens:%d,%d", bot->getLeftLightSensorReading(), bot->getRightLightSensorReading());
+    snprintf(buffer, sizeof(buffer), "light-sens:%d,%d", bot->getLeftLightSensorReading(), bot->getRightLightSensorReading());
     uart->send(buffer, ASYNC);
 }
 
@@ -185,7 +185,19 @@ void onNewLineSensorsData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[23];
-    snprintf(buffer, 23, "line-sens:%d,%d", bot->getLeftLineSensorReading(), bot->getRightLineSensorReading());
+    snprintf(buffer, sizeof(buffer), "line-sens:%d,%d", bot->getLeftLineSensorReading(), bot->getRightLineSensorReading());
+    uart->send(buffer, ASYNC);
+}
+
+void onNewDistanceSensorData(MicroBitEvent)
+{
+    if (connected == 0)
+    {
+        return;
+    }
+    uBit.sleep(1);  // Prevents an 020 error. 🤷
+    char buffer[23];
+    snprintf(buffer, sizeof(buffer), "dist-sens:%d", bot->getDistanceSensorReading());
     uart->send(buffer, ASYNC);
 }
 
@@ -216,6 +228,7 @@ int main()
     uBit.messageBus.listen(BOT_ID_BATTERY, BOT_BATTERY_EVT_UPDATE, onNewBatteryData);
     uBit.messageBus.listen(BOT_ID_LIGHT_SENSORS, BOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
     uBit.messageBus.listen(BOT_ID_LINE_SENSORS, BOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
+    uBit.messageBus.listen(BOT_ID_DISTANCE_SENSOR, BOT_DISTANCE_SENSOR_EVT_UPDATE, onNewDistanceSensorData);
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500

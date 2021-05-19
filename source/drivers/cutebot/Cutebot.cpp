@@ -3,6 +3,7 @@
 #include "inc/drivers/cutebot/CutebotHeadlight.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
 #include "inc/drivers/cutebot/CutebotLineSensors.h"
+#include "inc/drivers/cutebot/CutebotDistanceSensor.h"
 
 Cutebot::Cutebot(MicroBitI2C &_i2c, MicroBitIO &_io) : i2c(_i2c), io(_io) {
     this->leftHeadlight = new CutebotHeadlight(i2c, CUTEBOT_HEADLIGHT_ID_LEFT);
@@ -19,7 +20,9 @@ Cutebot::Cutebot(MicroBitI2C &_i2c, MicroBitIO &_io) : i2c(_i2c), io(_io) {
     this->rightMotor = new CutebotMotor(i2c,  CUTEBOT_MOTOR_ID_RIGHT);
 
     this->lineSensors = new CutebotLineSensors(io);
+    this->distanceSensor = new CutebotDistanceSensor(io);
     fiber_add_idle_component(lineSensors);
+    fiber_add_idle_component(distanceSensor);
 }
 
 Cutebot::~Cutebot() {
@@ -63,3 +66,8 @@ uint16_t Cutebot::getLeftLineSensorReading() {
 uint16_t Cutebot::getRightLineSensorReading() {
     return this->lineSensors->getRightReading();
 }
+
+uint16_t Cutebot::getDistanceSensorReading() {
+    return this->distanceSensor->getDistance();
+}
+
