@@ -5,11 +5,14 @@
 #include "inc/drivers/cutebot/CutebotHeadlight.h"
 #include "inc/drivers/cutebot/CutebotMotor.h"
 #include "inc/drivers/cutebot/CutebotLineSensors.h"
+#include "inc/drivers/cutebot/CutebotDistanceSensor.h"
 
 // Reference: https://github.com/elecfreaks/pxt-cutebot
 
-#define CUTEBOT_PERIOD_LINE_SENSORS       500
-#define CUTEBOT_START_COUNT_LINE_SENSORS  300
+#define CUTEBOT_PERIOD_LINE_SENSORS          500
+#define CUTEBOT_START_COUNT_LINE_SENSORS     300
+#define CUTEBOT_PERIOD_DISTANCE_SENSOR       500
+#define CUTEBOT_START_COUNT_DISTANCE_SENSOR  100
 
 // I2C address of the Cutebot
 const char CUTEBOT_I2C_ADDR = 0x10 << 1;
@@ -31,6 +34,7 @@ class Cutebot : public Bot
   CutebotHeadlight *leftHeadlight;
   CutebotHeadlight *rightHeadlight;
   CutebotLineSensors *lineSensors;
+  CutebotDistanceSensor *distanceSensor;
 
   public:
 
@@ -44,6 +48,7 @@ class Cutebot : public Bot
   int setBothHeadlightColor(uint8_t red, uint8_t green, uint8_t blue);
   uint16_t getLeftLineSensorReading();
   uint16_t getRightLineSensorReading();
+  uint16_t getDistanceSensorReading();
 };
 
 #endif

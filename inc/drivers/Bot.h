@@ -4,10 +4,12 @@
 #define BOT_ID_BATTERY            500
 #define BOT_ID_LIGHT_SENSORS      501
 #define BOT_ID_LINE_SENSORS       502
+#define BOT_ID_DISTANCE_SENSOR    503
 
-#define BOT_BATTERY_EVT_UPDATE         1
-#define BOT_LIGHT_SENSORS_EVT_UPDATE   1
-#define BOT_LINE_SENSORS_EVT_UPDATE    1
+#define BOT_BATTERY_EVT_UPDATE             1
+#define BOT_LIGHT_SENSORS_EVT_UPDATE       1
+#define BOT_LINE_SENSORS_EVT_UPDATE        1
+#define BOT_DISTANCE_SENSOR_EVT_UPDATE     1
 
 class Bot {
 
@@ -27,6 +29,7 @@ class Bot {
   virtual uint16_t getLeftLineSensorReading() = 0;
   virtual uint16_t getRightLineSensorReading() = 0;
   virtual uint16_t getBatteryVoltage() { return 0; };
+  virtual uint16_t getDistanceSensorReading() { return 0; };
 
   void setDetected(bool detected) {
     this->detected = detected;

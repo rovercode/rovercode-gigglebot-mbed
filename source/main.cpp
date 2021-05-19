@@ -149,6 +149,18 @@ void onNewLineSensorsData(MicroBitEvent)
     uart->send(buffer, ASYNC);
 }
 
+void onNewDistanceSensorData(MicroBitEvent)
+{
+    if (connected == 0)
+    {
+        return;
+    }
+    uBit.sleep(1);  // Prevents an 020 error. 🤷
+    char buffer[23];
+    snprintf(buffer, 23, "dist-sens:%d", bot->getDistanceSensorReading());
+    uart->send(buffer, ASYNC);
+}
+
 
 int main()
 {
@@ -176,6 +188,7 @@ int main()
     uBit.messageBus.listen(BOT_ID_BATTERY, BOT_BATTERY_EVT_UPDATE, onNewBatteryData);
     uBit.messageBus.listen(BOT_ID_LIGHT_SENSORS, BOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
     uBit.messageBus.listen(BOT_ID_LINE_SENSORS, BOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
+    uBit.messageBus.listen(BOT_ID_DISTANCE_SENSOR, BOT_DISTANCE_SENSOR_EVT_UPDATE, onNewDistanceSensorData);
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500
