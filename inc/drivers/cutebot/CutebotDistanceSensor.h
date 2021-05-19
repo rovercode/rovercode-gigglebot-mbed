@@ -1,5 +1,5 @@
-#ifndef CUTEBOT_BATTERY_H
-#define CUTEBOT_BATTERY_H
+#ifndef CUTEBOT_DISTANCE_SENSOR_H
+#define CUTEBOT_DISTANCE_SENSOR_H
 
 #include "MicroBitComponent.h"
 #include "MicroBitIO.h"
