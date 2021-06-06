@@ -3,16 +3,17 @@
 
 #include "MicroBitComponent.h"
 #include "MicroBitI2C.h"
+#include "inc/drivers/Motor.h"
 
 enum GigglebotMotorId {
-  MOTOR_ID_RIGHT = 1,
-  MOTOR_ID_LEFT,
-  MOTOR_ID_BOTH
+  GIGGLEBOT_MOTOR_ID_RIGHT = 1,
+  GIGGLEBOT_MOTOR_ID_LEFT,
+  GIGGLEBOT_MOTOR_ID_BOTH
 };
 
-class GigglebotMotor
+class GigglebotMotor : public Motor
 {
-    MicroBitI2C i2c;
+    MicroBitI2C &i2c;
     const static short int SCALED_POWERS[];
     GigglebotMotorId motorId;
 
@@ -21,10 +22,7 @@ class GigglebotMotor
 
     /**
      * @param power ranges -100 to 100
-     * @param scale adjust the power value to avoid the lowest power settings
      */
-    void setMotorPower(int power, bool scale = false);
-
-
+    void setMotorPower(int power);
 };
 #endif

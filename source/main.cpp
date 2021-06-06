@@ -1,20 +1,14 @@
 #include "MicroBit.h"
 #include "MicroBitUARTService.h"
 
-#include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotMotor.h"
-#include "inc/drivers/GigglebotBattery.h"
-#include "inc/drivers/GigglebotLightSensors.h"
-#include "inc/drivers/GigglebotLineSensors.h"
+#include "inc/drivers/Bot.h"
+#include "inc/drivers/gigglebot/Gigglebot.h"
+#include "inc/drivers/cutebot/Cutebot.h"
 
 MicroBit uBit;
 MicroBitUARTService *uart;
-GigglebotMotor leftMotor(uBit.i2c,  MOTOR_ID_LEFT);
-GigglebotMotor rightMotor(uBit.i2c, MOTOR_ID_RIGHT);
-GigglebotMotor bothMotors(uBit.i2c, MOTOR_ID_BOTH);
-GigglebotBattery battery(uBit.i2c);
-GigglebotLightSensors lightSensors(uBit.i2c);
-GigglebotLineSensors lineSensors(uBit.i2c);
+
+Bot* bot;
 
 const MicroBitImage IMAGE_HAPPY = MicroBitImage("0,0,0,0,0\n0,1,0,1,0\n0,0,0,0,0\n1,0,0,0,1\n0,1,1,1,0\n");
 
@@ -37,19 +31,50 @@ void handleDisplay()
 void handleRightMotor()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    rightMotor.setMotorPower(atoi(msg.toCharArray()), true);
+    bot->setRightMotorPower(atoi(msg.toCharArray()));
 }
 
 void handleLeftMotor()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    leftMotor.setMotorPower(atoi(msg.toCharArray()), true);
+    bot->setLeftMotorPower(atoi(msg.toCharArray()));
 }
 
 void handleBothMotors()
 {
     ManagedString msg = uart->readUntil(ManagedString("\n"));
-    bothMotors.setMotorPower(atoi(msg.toCharArray()), true);
+    bot->setBothMotorsPower(atoi(msg.toCharArray()));
+}
+
+void parseRgb(uint8_t *red, uint8_t *green, uint8_t *blue)
+{
+    ManagedString redString = uart->readUntil(ManagedString(":"));
+    *red = atoi(redString.toCharArray());
+    ManagedString greenString = uart->readUntil(ManagedString(":"));
+    *green = atoi(greenString.toCharArray());
+    ManagedString blueString = uart->readUntil(ManagedString("\n"));
+    *blue = atoi(blueString.toCharArray());
+}
+
+void handleLeftHeadlight()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setLeftHeadlightColor(red, green, blue);
+}
+
+void handleRightHeadlight()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setRightHeadlightColor(red, green, blue);
+}
+
+void handleBothHeadlights()
+{
+    uint8_t red, green, blue;
+    parseRgb(&red, &green, &blue);
+    bot->setBothHeadlightColor(red, green, blue);
 }
 
 void onUartEvent(MicroBitEvent)
@@ -74,6 +99,15 @@ void onUartEvent(MicroBitEvent)
     }
     else if (msg == "both-motors") {
         create_fiber(handleBothMotors);
+    }
+    else if (msg == "left-hl") {
+        create_fiber(handleLeftHeadlight);
+    }
+    else if (msg == "right-hl") {
+        create_fiber(handleRightHeadlight);
+    }
+    else if (msg == "both-hl") {
+        create_fiber(handleBothHeadlights);
     }
     else
     {
@@ -115,7 +149,7 @@ void onNewAccelData(MicroBitEvent)
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     Sample3D sample = uBit.accelerometer.getSample();
     char buffer[20];
-    snprintf(buffer, 20, "accel:%d,%d,%d", sample.x, sample.y, sample.z);
+    snprintf(buffer, sizeof(buffer), "accel:%d,%d,%d", sample.x, sample.y, sample.z);
     uart->send(buffer, ASYNC);
 }
 
@@ -127,7 +161,7 @@ void onNewBatteryData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[20];
-    snprintf(buffer, 20, "battery-sens:%d", battery.getVoltage());
+    snprintf(buffer, sizeof(buffer), "battery-sens:%d", bot->getBatteryVoltage());
     uart->send(buffer, ASYNC);
 }
 
@@ -139,7 +173,7 @@ void onNewLightSensorsData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[23];
-    snprintf(buffer, 23, "light-sens:%d,%d", lightSensors.getLeftReading(), lightSensors.getRightReading());
+    snprintf(buffer, sizeof(buffer), "light-sens:%d,%d", bot->getLeftLightSensorReading(), bot->getRightLightSensorReading());
     uart->send(buffer, ASYNC);
 }
 
@@ -151,7 +185,19 @@ void onNewLineSensorsData(MicroBitEvent)
     }
     uBit.sleep(1);  // Prevents an 020 error. 🤷
     char buffer[23];
-    snprintf(buffer, 23, "line-sens:%d,%d", lineSensors.getLeftReading(), lineSensors.getRightReading());
+    snprintf(buffer, sizeof(buffer), "line-sens:%d,%d", bot->getLeftLineSensorReading(), bot->getRightLineSensorReading());
+    uart->send(buffer, ASYNC);
+}
+
+void onNewDistanceSensorData(MicroBitEvent)
+{
+    if (connected == 0)
+    {
+        return;
+    }
+    uBit.sleep(1);  // Prevents an 020 error. 🤷
+    char buffer[23];
+    snprintf(buffer, sizeof(buffer), "dist-sens:%d", bot->getDistanceSensorReading());
     uart->send(buffer, ASYNC);
 }
 
@@ -161,6 +207,16 @@ int main()
     // Initialise the micro:bit runtime.
     uBit.init();
 
+    bot = new Gigglebot(uBit.i2c);
+    if (!bot->isDetected()) {
+        delete bot;
+        bot = new Cutebot(uBit.i2c, uBit.io);
+        if (!bot->isDetected()) {
+            delete bot;
+            uBit.display.scrollAsync("NO BOT");
+        }
+    }
+
     uBit.accelerometer.setPeriod(1000);  // milliseconds
 
     uBit.messageBus.listen(MICROBIT_ID_BLE, MICROBIT_BLE_EVT_CONNECTED, onConnected);
@@ -169,13 +225,10 @@ int main()
     uBit.messageBus.listen(MICROBIT_ID_BUTTON_B, MICROBIT_BUTTON_EVT_CLICK, onButtonB);
     uBit.messageBus.listen(MICROBIT_ID_BLE_UART, MICROBIT_BLE_EVENT_SERVICE, onUartEvent);
     // uBit.messageBus.listen(MICROBIT_ID_ACCELEROMETER, MICROBIT_ACCELEROMETER_EVT_DATA_UPDATE, onNewAccelData);
-    uBit.messageBus.listen(GIGGLEBOT_ID_BATTERY, GIGGLEBOT_BATTERY_EVT_UPDATE, onNewBatteryData);
-    uBit.messageBus.listen(GIGGLEBOT_ID_LIGHT_SENSORS, GIGGLEBOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
-    uBit.messageBus.listen(GIGGLEBOT_ID_LINE_SENSORS, GIGGLEBOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
-
-    fiber_add_idle_component(&battery);
-    fiber_add_idle_component(&lightSensors);
-    fiber_add_idle_component(&lineSensors);
+    uBit.messageBus.listen(BOT_ID_BATTERY, BOT_BATTERY_EVT_UPDATE, onNewBatteryData);
+    uBit.messageBus.listen(BOT_ID_LIGHT_SENSORS, BOT_LIGHT_SENSORS_EVT_UPDATE, onNewLightSensorsData);
+    uBit.messageBus.listen(BOT_ID_LINE_SENSORS, BOT_LINE_SENSORS_EVT_UPDATE, onNewLineSensorsData);
+    uBit.messageBus.listen(BOT_ID_DISTANCE_SENSOR, BOT_DISTANCE_SENSOR_EVT_UPDATE, onNewDistanceSensorData);
 
     // Note GATT table size increased from default in MicroBitConfig.h
     // #define MICROBIT_SD_GATT_TABLE_SIZE             0x500

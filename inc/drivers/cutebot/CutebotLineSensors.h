@@ -1,19 +1,17 @@
-#ifndef GIGGLEBOT_LINE_SENSORS_H
-#define GIGGLEBOT_LINE_SENSORS_H
+#ifndef CUTEBOT_LINE_SENSORS_H
+#define CUTEBOT_LINE_SENSORS_H
 
 #include "MicroBitComponent.h"
-#include "MicroBitI2C.h"
+#include "MicroBitIO.h"
 
-#define GIGGLEBOT_LINE_SENSORS_EVT_UPDATE         1
-
-class GigglebotLineSensors : public MicroBitComponent
+class CutebotLineSensors : public MicroBitComponent
 {
-    MicroBitI2C i2c;
+    MicroBitIO &io;
     uint16_t readings [2];
     uint16_t counter;
 
     public:
-    GigglebotLineSensors(MicroBitI2C &_i2c);
+    CutebotLineSensors(MicroBitIO &_io);
 
     uint16_t getLeftReading();
     uint16_t getRightReading();
