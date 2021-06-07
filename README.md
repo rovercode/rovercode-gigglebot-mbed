@@ -25,6 +25,32 @@ sudo docker run --rm -v ${PWD}:/app yt clean
 sudo docker run --rm -v ${PWD}:/app yt build
 ```
 
+## Lint
+
+* [Install clang-format](https://clang.llvm.org/docs/ClangFormat.html)
+
+Defaults to LLVM style.
+
+```
+clang-format --dry-run --verbose source/*.cpp source/drivers/*.cpp
+```
+
+And to auto-fix errors:
+```
+clang-format -i --verbose source/*.cpp source/drivers/*.cpp
+```
+
+
+#### Alternative Docker container
+
+```
+sudo docker build -f lint.Dockerfile . -t clang-format
+sudo docker run --rm -v ${PWD}:/app clang-format --dry-run --verbose source/*.cpp source/drivers/*.cpp
+sudo docker run --rm -v ${PWD}:/app clang-format -i --verbose source/*.cpp source/drivers/*.cpp
+```
+
+
+
 ## Copy hex to the micro:bit
 
 Example command on Ubuntu.
