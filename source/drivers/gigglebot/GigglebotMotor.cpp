@@ -1,7 +1,7 @@
 #include "MicroBitEvent.h"
 
-#include "inc/Gigglebot.h"
-#include "inc/drivers/GigglebotMotor.h"
+#include "inc/drivers/gigglebot/Gigglebot.h"
+#include "inc/drivers/gigglebot/GigglebotMotor.h"
 
 GigglebotMotor::GigglebotMotor(MicroBitI2C &_i2c, GigglebotMotorId _motorId)
     : i2c(_i2c), motorId(_motorId) {}
@@ -28,12 +28,13 @@ const short int GigglebotMotor::SCALED_POWERS[201] = {
     87,   88,  88,  89,  90,  90,  91,  92,  92,  93,  94,  94,  95,  95,  96,
     97,   97,  98,  99,  99,  100};
 
-void GigglebotMotor::setMotorPower(int power, bool scaled) {
-  char buffer[3];
+void GigglebotMotor::setMotorPower(int power)
+{
+    char buffer[3];
 
-  buffer[0] = SET_MOTOR_POWER;
-  buffer[1] = this->motorId;
-  buffer[2] = scaled ? SCALED_POWERS[power + 100] : power;
+    buffer[0] = SET_MOTOR_POWER;
+    buffer[1] = this->motorId;
+    buffer[2] = SCALED_POWERS[power + 100];
 
-  this->i2c.write(I2C_ADDR, buffer, 3);
+    this->i2c.write(GIGGLEBOT_I2C_ADDR, buffer, 3);
 }

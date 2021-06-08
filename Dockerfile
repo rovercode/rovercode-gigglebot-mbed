@@ -15,6 +15,7 @@ RUN apt update && apt install -y \
     libssl-dev \
     srecord \
     gcc-arm-none-eabi
-RUN pip install yotta
 
+RUN pip install -U pip
+RUN pip install yotta
 ENTRYPOINT ["yt"]
