@@ -6,8 +6,8 @@
 #include "inc/drivers/Motor.h"
 
 enum CutebotMotorId {
-  CUTEBOT_MOTOR_ID_RIGHT = 1,
-  CUTEBOT_MOTOR_ID_LEFT,
+  CUTEBOT_MOTOR_ID_LEFT = 1,
+  CUTEBOT_MOTOR_ID_RIGHT,
 };
 
 class CutebotMotor : public Motor
