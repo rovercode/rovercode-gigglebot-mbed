@@ -9,10 +9,10 @@
 
 // Reference: https://github.com/elecfreaks/pxt-cutebot
 
-#define CUTEBOT_PERIOD_LINE_SENSORS          500
-#define CUTEBOT_START_COUNT_LINE_SENSORS     300
-#define CUTEBOT_PERIOD_DISTANCE_SENSOR       500
-#define CUTEBOT_START_COUNT_DISTANCE_SENSOR  100
+#define CUTEBOT_PERIOD_LINE_SENSORS          100
+#define CUTEBOT_START_COUNT_LINE_SENSORS     0
+#define CUTEBOT_PERIOD_DISTANCE_SENSOR       100
+#define CUTEBOT_START_COUNT_DISTANCE_SENSOR  50
 
 // I2C address of the Cutebot
 const char CUTEBOT_I2C_ADDR = 0x10 << 1;
