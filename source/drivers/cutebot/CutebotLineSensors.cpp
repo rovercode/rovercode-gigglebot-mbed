@@ -12,12 +12,12 @@ CutebotLineSensors::CutebotLineSensors(MicroBitIO &_io) : io(_io), readings {0, 
 
 uint16_t CutebotLineSensors::getLeftReading()
 {
-    return this->readings[1];
+    return this->readings[0];
 }
 
 uint16_t CutebotLineSensors::getRightReading()
 {
-    return this->readings[0];
+    return this->readings[1];
 }
 
 void CutebotLineSensors::idleTick()
